@@ -53,8 +53,7 @@ jobs:
 
       - name: Publish test results
         if: always()
-        uses: dorny/test-reporter@v1
+        uses: mikepenz/action-junit-report@v4
         with:
-          name: Vitest Test Results
-          path: reports/vitest-junit.xml
-          reporter: java-junit
+          check_name: Vitest Test Results
+          report_paths: reports/vitest-junit.xml

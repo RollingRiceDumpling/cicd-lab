@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: read
-  checks: write
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -17,8 +16,6 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -43,17 +40,10 @@ jobs:
           mkdir -p reports
           npm test -- --reporter=default --reporter=junit --outputFile.junit=reports/vitest-junit.xml
 
-      - name: Upload test report artifact
+      - name: Upload test report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: test-report
           path: reports/
           if-no-files-found: error
-
-      - name: Publish test results
-        if: always()
-        uses: mikepenz/action-junit-report@v4
-        with:
-          check_name: Vitest Test Results
-          report_paths: reports/vitest-junit.xml
